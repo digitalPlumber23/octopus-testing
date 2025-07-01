@@ -1,2 +1,10 @@
 name = "deploy-app"
 description = "deploy app"
+
+parameter "worker-pool" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = ""
+}
