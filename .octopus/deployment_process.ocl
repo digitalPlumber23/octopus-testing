@@ -109,3 +109,4 @@ step "test-from-git" {
         worker_pool = "hosted-ubuntu"
     }
 }
+}
