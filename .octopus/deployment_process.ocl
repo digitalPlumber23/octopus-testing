@@ -25,7 +25,7 @@ step "we-run-a-script-here" {
                 
                 EOT
             Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "Basasfg"
+            Octopus.Action.Script.Syntax = "Bash"
             OctopusUseBundledTooling = "False"
         }
         worker_pool = "hosted-ubuntu"
