@@ -95,6 +95,7 @@ step "nume-generic" {
         }
         worker_pool = "hosted-ubuntu"
     }
+}
 step "test-from-git" {
     name = "from git"
 
@@ -109,4 +110,4 @@ step "test-from-git" {
         worker_pool = "hosted-ubuntu"
     }
 }
-}
+
