@@ -1,0 +1,81 @@
+step "are-you-sure-you-want-to-do-canary" {
+    name = "Are you sure you want to do canary?"
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["acceptance", "production"]
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "**Please verify the Production environment is ready before proceeding. [CLICK HERE](http://google.com)**"
+            Octopus.Action.Manual.ResponsibleTeamIds = "global/octopus-administrators,global/octopus-managers"
+        }
+    }
+}
+
+step "we-run-a-script-here" {
+    name = "We run a script here"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                greeting=$(get_octopusvariable "Helloworld.Greeting")
+                echo $greeting
+                
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+    }
+}
+
+step "run-a-script-from-module" {
+    name = "Run a Script from module"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                import testScriptModule
+                
+                testScriptModule.say_hello(get_octopusvariable("TestingScriptModule.module"))
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Python"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-windows"
+    }
+}
+
+step "deploy-a-package" {
+    name = "Deploy a Package "
+    properties = {
+        Octopus.Action.TargetRoles = "tutorial-target"
+    }
+
+    action {
+        action_type = "Octopus.TentaclePackage"
+        notes = "**[CANARY]**"
+        properties = {
+            Octopus.Action.EnabledFeatures = ",Octopus.Features.ConfigurationTransforms,Octopus.Features.ConfigurationVariables"
+            Octopus.Action.Package.AutomaticallyRunConfigurationTransformationFiles = "True"
+            Octopus.Action.Package.AutomaticallyUpdateAppSettingsAndConnectionStrings = "True"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "hello-world"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "hello-world"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+variable "Helloworld.Greeting" {
+    value "Hello, Development" {
+        environment = ["development"]
+    }
+
+    value "Hello, Acceptance" {
+        environment = ["acceptance"]
+    }
+}
+
+variable "TestingScriptModule.module" {
+    value "acc" {
+        environment = ["acceptance"]
+    }
+
+    value "dev" {
+        environment = ["development"]
+    }
+
+    value "prd" {
+        environment = ["production"]
+    }
+}
