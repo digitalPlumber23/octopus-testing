@@ -1,0 +1,2 @@
+name = "deploy-application"
+description = "Template used to deploy applications to the container hosting platform. Has variou options like actions: delete/deploy/rescale and various strategies: canary/blue-green"
